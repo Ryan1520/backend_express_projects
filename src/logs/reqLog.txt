@@ -1,0 +1,8 @@
+20250218	21:32:06	0a087b1f-4c54-46a9-a58b-5495c4b91042	GET	undefined	/abcdfff
+20250218	21:34:09	d1880a0b-3bd7-42a6-affe-fd8b8034cbbf	GET	undefined	/abcdfff
+20250218	21:35:22	55f04961-9709-4f52-8eb2-48ff17033755	GET	undefined	/abcdfff
+20250218	21:35:30	de1117fb-6bcf-4b4c-86e1-cc90401faed1	GET	undefined	/abcdfff
+20250218	21:38:08	0fb7b219-c470-4925-8e3e-4d6fafbf1f50	GET	undefined	/abcdfff
+20250218	21:38:08	31f5393d-32d7-4919-8cdd-4cb6a2b47872	GET	undefined	/css/style.css
+20250218	21:39:02	407572f3-4a20-4acd-b832-bcbc45d5831b	GET	undefined	/abcdfff
+20250218	21:39:02	56e6d98e-0214-464f-a049-ea3face6258f	GET	undefined	/css/style.css
