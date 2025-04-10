@@ -11,6 +11,9 @@ import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
 
+import authRouter from "./routes/auth";
+import { verifyJWT } from "./middleware/verifyJWT";
+
 const app: Express = express();
 
 app.use(logger);
@@ -31,11 +34,13 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 //TODO: add routes here---------------------|
-//                                          |
-//                                          |
-//                                          |
-//                                          |
-// -----------------------------------------|
+app.use('/auth', authRouter)
+
+//Add required authentication route here
+app.use(verifyJWT)
+app.get('/test', (req: Request, res: Response) => {
+  res.status(200).send('test ok')
+})
 
 app.all("*", (req: Request, res: Response) => {
   res.status(404);
