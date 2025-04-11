@@ -2,18 +2,22 @@ const port = process.env.PORT || 3500;
 
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
 import cors from "cors";
 import { corsOrigin } from "./config/corsOptions";
 import { logger } from "./middleware/logEvents";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { errorHandler } from "./middleware/errorHandler";
-
-dotenv.config();
+import templateRoutes from "./routes/template";
+import morgan from "morgan";
 
 const app: Express = express();
 
-app.use(logger);
+app.use(morgan("dev"));
+
+// app.use(logger);
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOrigin));
@@ -32,8 +36,7 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 
 //TODO: add routes here---------------------|
 //                                          |
-//                                          |
-//                                          |
+app.use("/template", templateRoutes); //example
 //                                          |
 // -----------------------------------------|
 
