@@ -12,8 +12,18 @@ import path from "path";
 import { errorHandler } from "./middleware/errorHandler";
 import templateRoutes from "./routes/template";
 import morgan from "morgan";
+import mongoose from "mongoose";
+import { connectToMongoDB } from "./config/mongodb";
+import { getCliParameter } from "./utils/getCliParameter";
 
 const app: Express = express();
+
+const dbType = getCliParameter("db");
+
+if (dbType == "mongo") {
+  console.log("🔃 Connecting to MongoDB...");
+  connectToMongoDB();
+}
 
 app.use(morgan("dev"));
 
@@ -54,6 +64,15 @@ app.all("*", (req: Request, res: Response) => {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`▶︎▶︎▶︎ Server is running on PORT: ${port} ◀︎◀︎◀︎`);
-});
+if (dbType == "mongo") {
+  mongoose.connection.once("open", () => {
+    console.log("✅✅--< MongoDB connection established >--✅✅");
+    app.listen(port, () => {
+      console.log(`▶︎▶︎▶︎ Server is running on PORT: ${port} ◀︎◀︎◀︎`);
+    });
+  });
+} else {
+  app.listen(port, () => {
+    console.log(`▶︎▶︎▶︎ Server is running on PORT: ${port} ◀︎◀︎◀︎`);
+  });
+}
