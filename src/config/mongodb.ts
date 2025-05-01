@@ -23,6 +23,7 @@ export const connectToMongoDB = async () => {
       pass: process.env.MONGODB_PASSWORD,
       retryWrites: true,
       writeConcern: { w: "majority" },
+      dbName: process.env.MONGODB_DATABASE,
       appName: process.env.MONGODB_DATABASE ?? "",
     });
   } catch (error) {
