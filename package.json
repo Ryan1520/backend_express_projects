@@ -8,11 +8,16 @@
     "start": "node dist/index.js",
     "dev": "ts-node-dev src/index.ts",
     "create-mongodb-env": "node src/cli/create-mongodb-env.js",
-    "create-mysql-env": "node src/cli/create-mysql-env.js"
+    "create-mysql-env": "node src/cli/create-mysql-env.js",
+    "prisma:format": "prisma format",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "prisma:generate": "prisma generate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
@@ -35,6 +40,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.13.4",
+    "prisma": "^6.7.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"

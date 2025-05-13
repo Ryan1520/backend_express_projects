@@ -1,10 +1,32 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "../config/sqldb";
+import User from "../model/User";
 import { handleErrorWith } from "../utils/common";
+import { PrismaClient } from "@prisma/client";
 
-const controller1 = (req: Request, res: Response, next: NextFunction) => {
+const prisma = new PrismaClient();
+// use `prisma` in your application to read and write data in your DB
+
+const controller1 = async (req: Request, res: Response, next: NextFunction) => {
   handleErrorWith(next, "not_found", 404, { id: "123" });
 };
+
+const controller2 = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await prisma.post.create({
+      data: {
+        title: "Hello World",
+      },
+    });
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating user",
+      error: error,
+    });
+  }
+};
+
 const controller3 = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // await User.create({
