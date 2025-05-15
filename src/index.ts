@@ -16,6 +16,9 @@ import mongoose from "mongoose";
 import { connectToMongoDB } from "./config/mongodb";
 import { getCliParameter } from "./utils/getCliParameter";
 
+import authRouter from "./routes/auth";
+import { verifyJWT } from "./middleware/verifyJWT";
+
 const app: Express = express();
 
 const dbType = getCliParameter("db");
@@ -49,6 +52,13 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/template", templateRoutes); //example
 //                                          |
 // -----------------------------------------|
+app.use('/auth', authRouter)
+
+//Add required authentication route here
+app.use(verifyJWT)
+app.get('/test', (req: Request, res: Response) => {
+  res.status(200).send('test ok')
+})
 
 app.all("*", (req: Request, res: Response) => {
   res.status(404);
