@@ -6,7 +6,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const envFilePath = path.join(__dirname, "..", "../.env");
 
-
 const envContent = `
 MYSQL_HOST=localhost # MySQL host
 MYSQL_PORT=3306 # MySQL port

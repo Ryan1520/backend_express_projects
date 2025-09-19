@@ -6,7 +6,7 @@ dotenv.config();
 
 import cors from "cors";
 import { corsOrigin } from "./config/corsOptions";
-import { logger } from "./middleware/logEvents";
+// import { logger } from "./middleware/logEvents";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { errorHandler } from "./middleware/errorHandler";

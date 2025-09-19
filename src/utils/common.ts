@@ -1,12 +1,7 @@
 import { NextFunction, Response } from "express";
 import { ErrorResponseI } from "../interfaces/common";
 
-export const handleErrorWith = (
-  next: NextFunction,
-  message?: string,
-  status?: number,
-  data?: any
-) => {
+export const handleErrorWith = (next: NextFunction, message?: string, status?: number, data?: any) => {
   const error: ErrorResponseI = {
     status,
     message,
@@ -14,5 +9,5 @@ export const handleErrorWith = (
   };
 
   next(error);
-  return
+  return;
 };

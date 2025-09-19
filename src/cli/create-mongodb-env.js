@@ -6,7 +6,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const envFilePath = path.join(__dirname, "..", "../.env");
 
-
 const envContent = `
 MONGODB_URI=<uri> 
 #sample: mongodb+srv://project1.ispbzwv.mongodb.net

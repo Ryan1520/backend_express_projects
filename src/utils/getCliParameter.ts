@@ -1,6 +1,6 @@
 export const getCliParameter = (key: string) => {
   const agrvs = process.argv.slice(2);
-  
+
   const value = agrvs.find((arg) => arg.startsWith(`--${key}=`));
 
   if (!value) {
@@ -10,4 +10,4 @@ export const getCliParameter = (key: string) => {
   }
 
   return value.split("=")[1];
-}
+};

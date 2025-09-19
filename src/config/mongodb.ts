@@ -12,9 +12,7 @@ export const connectToMongoDB = async () => {
   mongoose.set("strictQuery", true);
 
   if (!process.env.MONGODB_USERNAME || !process.env.MONGODB_PASSWORD) {
-    throw new Error(
-      "⛔⛔DB Authentication info is not defined in .env file⛔⛔"
-    );
+    throw new Error("⛔⛔DB Authentication info is not defined in .env file⛔⛔");
   }
 
   try {
