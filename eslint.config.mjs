@@ -16,6 +16,7 @@ export default defineConfig([
       "max-len": "off",
       "no-underscore-dangle": "off",
       "arrow-body-style": "off",
+      "prettier/prettier": "error",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
