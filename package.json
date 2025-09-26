@@ -12,11 +12,16 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "create-mongodb-env": "node src/cli/create-mongodb-env.js",
-    "create-mysql-env": "node src/cli/create-mysql-env.js"
+    "create-mysql-env": "node src/cli/create-mysql-env.js",
+    "prisma:format": "prisma format",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "prisma:generate": "prisma generate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
@@ -28,6 +33,7 @@
     "mongoose": "^6.13.8",
     "morgan": "^1.10.0",
     "mysql2": "^3.14.0",
+    "prisma": "^6.16.2",
     "uuid": "^11.0.5",
     "winston": "^3.17.0",
     "yarn": "^1.22.22"

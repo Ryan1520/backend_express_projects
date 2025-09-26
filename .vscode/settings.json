@@ -1,3 +1,7 @@
 {
-    "terminal.integrated.fontSize": 14
+  "terminal.integrated.fontSize": 14,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma",
+    "editor.formatOnSave": true
+  }
 }
