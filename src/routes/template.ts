@@ -1,6 +1,8 @@
 import express from "express";
 import templateControllers from "../controllers/templateControllers";
 import { paginate } from "../middleware/pagination";
+import { requestValidation } from "../middleware/requestValidation";
+import { createUserValidator } from "../validators/templateValidator";
 
 const router = express.Router();
 
@@ -9,7 +11,7 @@ router.route("/").get(templateControllers.controller1).get(templateControllers.c
 router
   .route("/:id")
   .get(paginate, templateControllers.controllerRead)
-  .post(templateControllers.controllerCreate)
+  .post(requestValidation(createUserValidator), templateControllers.controllerCreate)
   .put(templateControllers.controllerUpdate)
   .delete(templateControllers.controllerDelete);
 
