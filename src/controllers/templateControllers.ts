@@ -21,18 +21,13 @@ const controllerCreate = async (req: Request, res: Response, next: NextFunction)
     const user = await prisma.user.create({
       data: {
         email: "jonhdoe@gmail.com",
-        name: "jonhdoe",
+        username: "jonhdoe",
+        password: "hashedpassword",
         age: 25,
-        userPreferences: {
-          create: { emailUpdates: true },
-        },
       },
       // include: { userPreferences: true },
       select: {
-        name: true,
-        userPreferences: {
-          select: { emailUpdates: true },
-        },
+        username: true,
       },
     });
 
@@ -76,23 +71,23 @@ const controllerRead = async (req: Request, res: Response, next: NextFunction) =
     const users = await prisma.user.findMany({
       where: {
         // name: "johndoe",
-        name: { notIn: ["johndoe", "janedoe"] },
+        username: { notIn: ["johndoe", "janedoe"] },
         email: { contains: "@gmail.com", startsWith: "j", endsWith: "com" },
         age: { gt: 25, lt: 30 },
 
-        AND: [{ age: { not: 26 } }, { name: { not: "jimdoe" } }],
+        AND: [{ age: { not: 26 } }, { username: { not: "jimdoe" } }],
 
-        writtenPosts: { some: { title: { contains: "1" } } },
+        posts: { some: { title: { contains: "1" } } },
       },
       orderBy: {
         age: "asc",
       },
-      distinct: ["name", "age"],
+      distinct: ["username", "age"],
 
       take: res.locals.pagination.limit,
       skip: res.locals.pagination.skip,
 
-      include: { userPreferences: true },
+      include: { chat: true },
     });
 
     res.json(users);
@@ -108,7 +103,7 @@ const controllerUpdate = async (req: Request, res: Response, next: NextFunction)
     const user = await prisma.user.update({
       where: { id: updatedId },
       data: {
-        name: "johndoe2updated",
+        username: "johndoe2updated",
         age: {
           increment: 1,
           // decrement: 1,
