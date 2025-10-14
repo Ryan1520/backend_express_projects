@@ -11,10 +11,12 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { errorHandler } from "./middleware/errorHandler";
 import templateRoutes from "./routes/template";
+import authRoutes from "./routes/auth";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import { connectToMongoDB } from "./config/mongodb";
 import { getCliParameter } from "./utils/getCliParameter";
+import { verifyOtp } from "./middleware/verifyOtp";
 
 const app: Express = express();
 
@@ -46,6 +48,9 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 
 //TODO: add routes here---------------------|
 //                                          |
+app.use("/auth", authRoutes); //auth
+
+app.use(verifyOtp);
 app.use("/template", templateRoutes); //example
 //                                          |
 // -----------------------------------------|

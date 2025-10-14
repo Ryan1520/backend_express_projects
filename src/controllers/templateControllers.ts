@@ -23,6 +23,7 @@ const controllerCreate = async (req: Request, res: Response, next: NextFunction)
         email: "jonhdoe@gmail.com",
         name: "jonhdoe",
         age: 25,
+        password: "hashed_password",
         userPreferences: {
           create: { emailUpdates: true },
         },
