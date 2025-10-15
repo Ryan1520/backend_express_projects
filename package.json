@@ -16,7 +16,9 @@
     "prisma:format": "prisma format",
     "prisma:migrate": "prisma migrate dev",
     "prisma:push": "prisma db push",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:update": "yarn prisma:migrate && yarn prisma:generate",
+    "prisma:reset": "rm -rf prisma/migrations && npx prisma migrate reset --force && yarn prisma:migrate && yarn prisma:generate"
   },
   "author": "",
   "license": "ISC",

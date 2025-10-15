@@ -6,7 +6,7 @@ import { createUserValidator } from "../validators/templateValidator";
 
 const router = express.Router();
 
-router.route("/").get(templateControllers.controller1).get(templateControllers.controller2).get(templateControllers.controller3);
+router.route("/").get(templateControllers.controller1).post(templateControllers.controller2).put(templateControllers.controller3);
 
 router
   .route("/:id")
