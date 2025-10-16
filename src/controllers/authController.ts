@@ -207,8 +207,7 @@ const handleLogout = async (req: Request, res: Response, next: NextFunction) => 
   });
 
   res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-
-  res.sendStatus(200).json({ message: "Logout!" });
+  res.status(200).json({ message: "Logout!" });
 };
 
 export default { handleRegistration, handleLogin, handleRefreshToken, handleLogout };
