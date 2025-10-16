@@ -9,7 +9,7 @@ import { ErrorTypeE } from "../common/enums";
 const prisma = new PrismaClient({ log: ["query", "error"] });
 
 const handleRegistration = async (req: Request, res: Response, next: NextFunction) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
 
   if (!username || !password) {
     return handleErrorWith(next, "Username and password are required", 400, { code: ErrorTypeE.INVALID_REQUEST });
@@ -24,10 +24,9 @@ const handleRegistration = async (req: Request, res: Response, next: NextFunctio
     const hashedPwd = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.user.create({
-      // change data to fill in DB
       data: {
-        email: username,
-        name: username,
+        email: email,
+        username: username,
         password: hashedPwd,
       },
     });
@@ -48,7 +47,7 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction) => {
     return handleErrorWith(next, "Username and password are required", 400, { code: ErrorTypeE.INVALID_REQUEST });
   }
 
-  const foundUser = await prisma.user.findUnique({ where: { email: username } });
+  const foundUser = await prisma.user.findUnique({ where: { username } });
 
   if (!foundUser || isEmpty(foundUser))
     return handleErrorWith(next, "Unauthorized", 401, { username, password, code: ErrorTypeE.NOT_FOUND });
@@ -61,16 +60,17 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction) => {
     {
       userInfo: {
         id: foundUser.id,
+        name: foundUser.username,
         email: foundUser.email,
-        name: foundUser.name,
+        isAdmin: false,
       },
     },
     process.env.ACCESS_TOKEN_SECRET || "",
-    { expiresIn: "20s" } //change expiration time as needed
+    { expiresIn: "7d" } //change expiration time as needed
   );
 
   const refreshToken = jwt.sign(
-    { id: foundUser.id, email: foundUser.email, name: foundUser.name },
+    { id: foundUser.id, email: foundUser.email, name: foundUser.username },
     process.env.REFRESH_TOKEN_SECRET || "",
     { expiresIn: "7d" }
   );
@@ -106,7 +106,9 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // change existing time as needed
   });
 
-  res.json({ ...omit(foundUser, "password"), accessToken, refreshToken });
+  res
+    .cookie("token", accessToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 })
+    .json({ ...omit(foundUser, "password"), accessToken, refreshToken });
 };
 
 const handleRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
@@ -152,7 +154,7 @@ const handleRefreshToken = async (req: Request, res: Response, next: NextFunctio
         userInfo: {
           id: foundUser.id,
           email: foundUser.email,
-          name: foundUser.name,
+          name: foundUser.username,
         },
       },
       process.env.ACCESS_TOKEN_SECRET || "",
@@ -160,7 +162,7 @@ const handleRefreshToken = async (req: Request, res: Response, next: NextFunctio
     );
 
     const newRefreshToken = jwt.sign(
-      { id: foundUser.id, email: foundUser.email, name: foundUser.name },
+      { id: foundUser.id, email: foundUser.email, name: foundUser.username },
       process.env.REFRESH_TOKEN_SECRET || "",
       { expiresIn: "7d" }
     );
@@ -186,7 +188,7 @@ const handleRefreshToken = async (req: Request, res: Response, next: NextFunctio
 const handleLogout = async (req: Request, res: Response, next: NextFunction) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.sendStatus(204);
+  if (!cookies?.jwt) return handleErrorWith(next, "No content", 204, { code: ErrorTypeE.NOT_FOUND });
 
   const refreshToken = cookies.jwt;
 
@@ -194,7 +196,7 @@ const handleLogout = async (req: Request, res: Response, next: NextFunction) => 
 
   if (!foundUser) {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-    return res.sendStatus(204);
+    return handleErrorWith(next, "No content", 204, { code: ErrorTypeE.FORBIDDEN });
   }
 
   const filteredRefreshTokenArray = (foundUser.refreshToken as string[]).filter((rt) => rt !== refreshToken);
@@ -205,7 +207,8 @@ const handleLogout = async (req: Request, res: Response, next: NextFunction) => 
   });
 
   res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
-  res.sendStatus(204);
+
+  res.sendStatus(200).json({ message: "Logout!" });
 };
 
 export default { handleRegistration, handleLogin, handleRefreshToken, handleLogout };

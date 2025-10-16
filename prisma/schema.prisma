@@ -15,17 +15,18 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  email     String      @unique
-  username  String      @unique
-  password  String
-  age       Int
-  avatarUrl String?
-  createdAt DateTime    @default(now())
-  posts     Post[]
-  savedPost SavedPost[]
-  chat      Chat[]      @relation("ChatUsers")
-  seenChats Chat[]      @relation("ChatSeenBy")
+  id           String      @id @default(uuid())
+  email        String      @unique
+  username     String      @unique
+  password     String
+  age          Int?        @default(18)
+  refreshToken Json?
+  avatarUrl    String?
+  createdAt    DateTime    @default(now())
+  posts        Post[]
+  savedPost    SavedPost[]
+  chat         Chat[]      @relation("ChatUsers")
+  seenChats    Chat[]      @relation("ChatSeenBy")
 }
 
 model Post {
